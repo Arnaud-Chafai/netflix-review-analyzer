@@ -20,25 +20,24 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         }
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        header img {
-            height: 40px;
-        }
-        h1 {
+        .header-bar {
+            background-color: #000; /* Black background */
+            padding: 20px 30px; /* Make the black rectangle larger */
             text-align: center;
-            color: #e50914; /* Netflix red */
-            font-size: 24px; /* Slightly smaller */
-            margin-bottom: 20px;
+        }
+        .header-bar img {
+            height: 60px; /* Increase logo height */
+        }
+        .title {
+            text-align: center;
+            color: #fff; /* White text */
+            font-size: 20px; /* Slightly smaller */
+            margin: 20px 0 15px; /* Space between title and buttons */
         }
         .button-group {
             display: flex;
             justify-content: space-between;
+            margin-top: 20px; /* Space between the buttons and the black bar */
             margin-bottom: 20px;
         }
         .button-group button {
@@ -106,10 +105,10 @@
 </head>
 <body>
     <div class="container">
-        <header>
+        <div class="header-bar">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo">
-        </header>
-        <h1>Your Movie/Series Recommendation System</h1>
+        </div>
+        <h1 class="title">Your Movie/Series Recommendation System</h1>
         <div class="button-group">
             <button type="button" onclick="switchTo('movie')">Movie</button>
             <button type="button" onclick="switchTo('series')">Series</button>
@@ -151,7 +150,7 @@
             const movie1 = document.getElementById('movie1').value;
             const movie2 = document.getElementById('movie2').value;
 
-            const response = await fetch('http://localhost:5000/recommend', {
+            const response = await fetch('http://127.0.0.1:5000/recommend', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
