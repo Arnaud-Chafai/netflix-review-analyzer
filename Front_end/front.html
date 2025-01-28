@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix - Your Movie/Series Recommendation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #141414; /* Netflix dark background */
+            color: #e50914; /* Netflix red */
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #1f1f1f; /* Slightly lighter black */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        header img {
+            height: 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #e50914; /* Netflix red */
+            font-size: 24px; /* Slightly smaller */
+            margin-bottom: 20px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .button-group button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #e50914; /* Netflix red */
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            width: 48%;
+        }
+        .button-group button:hover {
+            background-color: #f40612; /* Slightly brighter red */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #333;
+            color: white;
+        }
+        input[type="text"]::placeholder {
+            color: #999;
+        }
+        .recommend-button {
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #e50914; /* Netflix red */
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            width: 70%;
+            margin: 0 auto;
+            display: block;
+        }
+        .recommend-button:hover {
+            background-color: #f40612; /* Slightly brighter red */
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .results p {
+            background: #333;
+            padding: 10px;
+            border-radius: 4px;
+            color: white;
+        }
+        .cinema-icon {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .cinema-icon span {
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo">
+        </header>
+        <h1>Your Movie/Series Recommendation System</h1>
+        <div class="button-group">
+            <button type="button" onclick="switchTo('movie')">Movie</button>
+            <button type="button" onclick="switchTo('series')">Series</button>
+        </div>
+        <form id="recommendationForm">
+            <label for="movie1" id="label1">Movie 1:</label>
+            <input type="text" id="movie1" name="movie1" placeholder="Enter the first movie">
+
+            <label for="movie2" id="label2">Movie 2:</label>
+            <input type="text" id="movie2" name="movie2" placeholder="Enter the second movie">
+
+            <button type="button" class="recommend-button" onclick="getRecommendation()">🎥 Get Recommendation</button>
+        </form>
+
+        <div class="results" id="results"></div>
+
+        <div class="cinema-icon">
+            <span>🎬</span>
+        </div>
+    </div>
+
+    <script>
+        let currentType = 'movie';
+
+        function switchTo(type) {
+            currentType = type;
+            const labels = {
+                movie: ['Movie 1:', 'Movie 2:'],
+                series: ['Series 1:', 'Series 2:']
+            };
+
+            document.getElementById('label1').textContent = labels[type][0];
+            document.getElementById('label2').textContent = labels[type][1];
+            document.getElementById('movie1').placeholder = `Enter the first ${type}`;
+            document.getElementById('movie2').placeholder = `Enter the second ${type}`;
+        }
+
+        async function getRecommendation() {
+            const movie1 = document.getElementById('movie1').value;
+            const movie2 = document.getElementById('movie2').value;
+
+            const response = await fetch('http://localhost:5000/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ type: currentType, movie1, movie2 }),
+            });
+
+            const result = await response.json();
+            const resultsDiv = document.getElementById('results');
+
+            resultsDiv.innerHTML = `
+                <h3>Recommendation Result:</h3>
+                <p><strong>Recommended ${currentType === 'movie' ? 'Movie' : 'Series'}:</strong> ${result.recommendation}</p>
+                <p><strong>Summary:</strong> ${result.summary}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
