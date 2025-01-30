@@ -9,53 +9,53 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #141414; /* Netflix dark background */
-            color: #e50914; /* Netflix red */
+            background-color: #141414;
+            color: #e50914;
         }
         .container {
             max-width: 600px;
             margin: 50px auto;
-            background: #1f1f1f; /* Slightly lighter black */
+            background: #1f1f1f;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         }
         .header-bar {
-            background-color: #000; /* Black background */
-            padding: 20px 30px; /* Make the black rectangle larger */
+            background-color: #000;
+            padding: 20px 30px;
             text-align: center;
         }
         .header-bar img {
-            height: 60px; /* Increase logo height */
+            height: 60px;
         }
         .title {
             text-align: center;
-            color: #fff; /* White text */
-            font-size: 20px; /* Slightly smaller */
-            margin: 20px 0 15px; /* Space between title and buttons */
+            color: #fff;
+            font-size: 20px;
+            margin: 20px 0 15px;
         }
         .button-group {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px; /* Space between the buttons and the black bar */
+            margin-top: 20px;
             margin-bottom: 10px;
         }
         .button-group button {
             padding: 10px;
             border: none;
             border-radius: 4px;
-            background-color: #e50914; /* Netflix red */
+            background-color: #e50914;
             color: white;
             font-size: 16px;
             cursor: pointer;
             width: 48%;
         }
         .button-group button:hover {
-            background-color: #f40612; /* Slightly brighter red */
+            background-color: #f40612;
         }
         .instruction {
             text-align: center;
-            color: #fff; /* White text */
+            color: #fff;
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -79,7 +79,7 @@
             padding: 15px;
             border: none;
             border-radius: 4px;
-            background-color: #e50914; /* Netflix red */
+            background-color: #e50914;
             color: white;
             font-size: 18px;
             cursor: pointer;
@@ -88,21 +88,17 @@
             display: block;
         }
         .recommend-button:hover {
-            background-color: #f40612; /* Slightly brighter red */
+            background-color: #f40612;
         }
         .results {
             margin-top: 20px;
-            text-align: center; /* Center-align the results */
+            text-align: center;
         }
-        .results .recommendation-title {
-            font-size: 24px;
-            color: white;
-            margin: 10px 0;
-        }
-        .results .icon {
-            font-size: 40px; /* Icon size */
-            display: block;
-            margin: 0 auto;
+        .results h2 {
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 28px;   /* Tamaño aumentado */
+            font-weight: bold; /* Negrita */
         }
         .results p {
             background: #333;
@@ -111,6 +107,7 @@
             color: white;
             margin: 10px auto;
             display: inline-block;
+            width: 90%;
         }
         .cinema-icon {
             display: flex;
@@ -119,6 +116,29 @@
         }
         .cinema-icon span {
             font-size: 40px;
+        }
+        /* Mensaje de carga */
+        .loading-message {
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            margin-top: 20px;
+            display: none; /* Oculto por defecto */
+        }
+        /* Animación de carga (spinner) */
+        .loader {
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top: 5px solid #e50914;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+            display: none; /* Oculto por defecto */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -145,6 +165,12 @@
             <button type="button" class="recommend-button" onclick="getRecommendation()">🎥 Get Recommendation</button>
         </form>
 
+        <!-- Mensaje de carga y spinner -->
+        <div class="loading-message" id="loadingMessage">
+            🍿 We are looking for your movie... Get your popcorn ready! 🍿
+            <div class="loader"></div>
+        </div>
+
         <div class="results" id="results"></div>
 
         <div class="cinema-icon">
@@ -155,46 +181,106 @@
     <script>
         let currentType = 'movie';
 
+        // Función para cambiar textos al pulsar los botones
         function switchTo(type) {
             currentType = type;
-            const labels = {
-                movie: ['Movie 1:', 'Movie 2:'],
-                series: ['Series 1:', 'Series 2:']
-            };
 
-            const instructions = {
-                movie: "Write two movie titles you like, and we’ll do the rest!",
-                series: "Write two series titles you like, and we’ll do the rest!"
-            };
+            const instructionText = document.getElementById('instructionText');
+            const label1 = document.getElementById('label1');
+            const label2 = document.getElementById('label2');
 
-            document.getElementById('label1').textContent = labels[type][0];
-            document.getElementById('label2').textContent = labels[type][1];
-            document.getElementById('movie1').placeholder = `Enter the first ${type}`;
-            document.getElementById('movie2').placeholder = `Enter the second ${type}`;
-            document.getElementById('instructionText').textContent = instructions[type];
+            if (type === 'movie') {
+                instructionText.textContent = "Write two movie titles you like, and we’ll do the rest!";
+                label1.textContent = "Movie 1:";
+                label2.textContent = "Movie 2:";
+            } else {
+                instructionText.textContent = "Write two series titles you like, and we’ll do the rest!";
+                label1.textContent = "Series 1:";
+                label2.textContent = "Series 2:";
+            }
+        }
+
+        /**
+         * Extrae la sección "Summary" desde la palabra "Summary:" 
+         * hasta llegar a "Positive Consensus" o "Negative Consensus" (o fin del texto).
+         */
+        function extractSummary(text) {
+            const regex = /Summary:\s*([\s\S]*?)(?=\nPositive Consensus|Positive Consensus:|Negative Consensus:|$)/i;
+            const match = text.match(regex);
+            return match ? match[1].trim() : "";
+        }
+
+        /**
+         * Extrae la sección "Positive Consensus" desde "Positive Consensus:" 
+         * hasta llegar a "Negative Consensus" o fin del texto.
+         */
+        function extractPositive(text) {
+            const regex = /Positive Consensus:\s*([\s\S]*?)(?=\nNegative Consensus|Negative Consensus:|Summary:|$)/i;
+            const match = text.match(regex);
+            return match ? match[1].trim() : "";
+        }
+
+        /**
+         * Extrae la sección "Negative Consensus" desde "Negative Consensus:" 
+         * hasta fin del texto o siguiente sección.
+         */
+        function extractNegative(text) {
+            const regex = /Negative Consensus:\s*([\s\S]*?)(?=\nSummary:|Summary|Positive Consensus:|$)/i;
+            const match = text.match(regex);
+            return match ? match[1].trim() : "";
         }
 
         async function getRecommendation() {
             const movie1 = document.getElementById('movie1').value;
             const movie2 = document.getElementById('movie2').value;
-
-            const response = await fetch('https://17fd-2a0c-5a81-a308-4a00-7cc9-81e9-ec94-44f0.ngrok-free.app/recommend', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ type: currentType, movie1, movie2 }),
-            });
-
-            const result = await response.json();
+            const loadingMessage = document.getElementById('loadingMessage');
+            const loader = document.querySelector('.loader');
             const resultsDiv = document.getElementById('results');
 
-            resultsDiv.innerHTML = `
-                <h3><span class="icon">📺</span> Recommended ${currentType === 'movie' ? 'Movie' : 'Series'}:</h3>
-                <p class="recommendation-title">${result.recommendation}</p>
-                <p><strong>Title Comment:</strong> ${result.review.title_comment}</p>
-                <p><strong>Comment:</strong> ${result.review.comment}</p>
-            `;
+            // Mostrar el mensaje de carga y el spinner
+            loadingMessage.style.display = "block";
+            loader.style.display = "block";
+            resultsDiv.innerHTML = ""; // Limpiar resultados anteriores
+
+            try {
+                const response = await fetch('https://0e57-2a0c-5a81-a300-c000-e927-d5f3-4a40-3b4.ngrok-free.app/recommend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ type: currentType, movie1, movie2 }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log("Respuesta del backend:", result);
+
+                // Ocultar el mensaje de carga y el spinner
+                loadingMessage.style.display = "none";
+                loader.style.display = "none";
+
+                // Extraer cada parte de la respuesta
+                const fullReview = result.review || "";
+                const summary = extractSummary(fullReview);
+                const positive = extractPositive(fullReview);
+                const negative = extractNegative(fullReview);
+
+                // Renderizar el resultado en pantalla
+                resultsDiv.innerHTML = `
+                    <h2>🎉 ${result.recommendation} 🎉</h2>
+                    <p><strong>📌 Summary:</strong> ${summary}</p>
+                    <p><strong>😊 Positive Consensus:</strong> ${positive}</p>
+                    <p><strong>⚠️ Negative Consensus:</strong> ${negative}</p>
+                `;
+            } catch (error) {
+                console.error("Error fetching recommendation:", error);
+                alert("An error occurred while fetching the recommendation. Please try again later.");
+                loadingMessage.style.display = "none";
+                loader.style.display = "none";
+            }
         }
     </script>
 </body>
