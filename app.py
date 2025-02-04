@@ -67,14 +67,14 @@ def recommend():
 Based on the following user comments {comentarios} about the movie or series '{random_title}', provide a concise analysis in this format:
 
 Summary:
-A brief, 2-line overall perception of the movie/series, based on user feedback.
+ A brief, 2-line overall perception of the movie/series, based on user feedback.
 
 
 Positive Consensus:
-One sentence summarizing the most common positive feedback.
+ One sentence summarizing the most common positive feedback.
 
 Negative Consensus:
-One sentence summarizing the most common criticism.
+ One sentence summarizing the most common criticism.
 
 
 """
