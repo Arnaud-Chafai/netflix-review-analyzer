@@ -15,7 +15,7 @@ client = openai.OpenAI(api_key=OPENAI_API_KEY)
 app = Flask(__name__)
 
 # Cargar el archivo CSV con las reseñas
-df = pd.read_csv("C:\\Users\\Arnaud\\Desktop\\Netflix\\Raw_data\\tablon.csv")
+df = pd.read_csv("C:\\Users\\Usuario\\Desktop\\Netflix\\Raw_data\\tablon.csv")
 print(f"CSV cargado con éxito. Número de filas: {len(df)}")
 
 @app.route('/')
@@ -64,20 +64,20 @@ def recommend():
                 {
                     "role": "user",
                     "content": f"""
-Based on the following user comments {comentarios} about the movie or series '{random_title}', provide a concise analysis in this format:
+                Based on the following user comments {comentarios} about the movie or series '{random_title}', provide a concise analysis in plain text format:
 
-Summary:
-A brief, 2-line overall perception of the movie/series, based on user feedback.
+                Summary:
+                (A brief, 3-line overall perception of the movie/series, based on user feedback.)
 
+                Positive Consensus:
+                (One sentence summarizing the most common positive feedback.)
 
-Positive Consensus:
-One sentence summarizing the most common positive feedback.
+                Negative Consensus:
+                (One sentence summarizing the most common criticism.)
 
-Negative Consensus:
-One sentence summarizing the most common criticism.
+                Do not use asterisks (**), bold, markdown, or special formatting. Provide the response in plain text format.
+                """
 
-
-"""
                 }
             ]
         )
