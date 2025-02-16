@@ -103,7 +103,8 @@ Este enfoque iterativo permitió una **recolección eficiente, escalable y preci
 
 
 
-<img src="https://github.com/Arnaud-Chafai/netflix-review-analyzer/blob/main/Diagrams/Giff_app.gif?raw=true" alt="Demostración del Proyecto" width="450">
+<img src="https://github.com/Arnaud-Chafai/netflix-review-analyzer/blob/main/Diagrams/Demostración.gif?raw=true" 
+     alt="Demostración del Proyecto" width="450" />
 </p>
 
 
