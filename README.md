@@ -62,7 +62,7 @@ Este enfoque iterativo permitió una **recolección eficiente, escalable y preci
 ## 🎯 Algoritmo de Recomendación con Clustering y Heurísticas Avanzadas  
 El sistema de recomendación implementa un enfoque híbrido que combina **aprendizaje automático (clustering con K-Means)** y **múltiples heurísticas** para ofrecer sugerencias personalizadas de películas y series. Se estructura en los siguientes pasos:
 
-### 🔹 1) Clustering y cálculo de similitud  
+###  1) Clustering y cálculo de similitud  
 - Se agrupan las películas y series en **clusters** mediante **K-Means**, utilizando como variables:  
   - **Género**  
   - **Popularidad en TMDB**  
@@ -70,7 +70,7 @@ El sistema de recomendación implementa un enfoque híbrido que combina **aprend
   - **Otras métricas relevantes**  
 - Para cada título ingresado, se buscan los títulos más cercanos en el espacio vectorial mediante la **distancia al centroide del cluster** y la **distancia entre títulos dentro del mismo grupo**.
 
-### 🔹 2) Cálculo de puntuación de recomendación  
+###  2) Cálculo de puntuación de recomendación  
 Se define una **puntuación de recomendación ponderada** basada en:  
 - **Distancia dentro del cluster** (mayor cercanía = mayor relevancia).  
 - **Popularidad en TMDB**.  
@@ -78,7 +78,7 @@ Se define una **puntuación de recomendación ponderada** basada en:
 - **Similitud de géneros**.  
 - **Ajustes heurísticos** según el tipo de contenido.  
 
-### 🔹 3) Aplicación de filtros heurísticos  
+###  3) Aplicación de filtros heurísticos  
 Para mejorar la precisión, se aplican reglas adicionales:  
 ✅ **Filtro de géneros**: Se requiere alta coincidencia de géneros.  
 ✅ **Filtro por tipo de contenido**: Solo películas para películas y series para series.  
@@ -88,7 +88,7 @@ Para mejorar la precisión, se aplican reglas adicionales:
 ✅ **Ajuste por IMDB**: Se penalizan títulos con baja puntuación y se bonifican los mejor valorados.  
 ✅ **Impulso a títulos populares**: Favoreciendo los más reconocidos.  
 
-### 🔹 4) Selección de la mejor recomendación  
+###  4) Selección de la mejor recomendación  
 - Se encuentra el título más similar con **RapidFuzz**.  
 - Se priorizan los resultados por **puntuación de recomendación**.  
 - Se alternan los criterios en tres pasos sucesivos:  
