@@ -59,7 +59,8 @@ Este enfoque iterativo permitió una **recolección eficiente, escalable y preci
 
 ---
 
-## 🎯 Algoritmo de Recomendación
+## 🎯 Algoritmo de Recomendación con Clustering y Heurísticas Avanzadas
+El sistema de recomendación implementa un enfoque híbrido que combina aprendizaje automático (clustering con K-Means) y múltiples heurísticas para ofrecer sugerencias personalizadas de películas y series. Se estructura en los siguientes pasos:
 
 ###  1) Carga y procesamiento de datos  
 - Se importan datasets con información de películas y series (**géneros, popularidad, puntuaciones, similitud**).  
