@@ -61,18 +61,18 @@ Este enfoque iterativo permitió una **recolección eficiente, escalable y preci
 
 ## 🎯 Algoritmo de Recomendación
 
-### 🔹 1) Carga y procesamiento de datos  
+###  1) Carga y procesamiento de datos  
 - Se importan datasets con información de películas y series (**géneros, popularidad, puntuaciones, similitud**).  
 - Se transforman los datos para facilitar su análisis y uso en el modelo.
 
-### 🔹 2) Cálculo de puntuación de recomendación  
+###  2) Cálculo de puntuación de recomendación  
 La recomendación se basa en una combinación ponderada de:  
-- **Popularidad en TMDB** (`α = 0.4`)  
-- **Puntuación en IMDB** (`β = 0.6`)  
+- **Popularidad en TMDB** 
+- **Puntuación en IMDB** 
 - **Similitud de géneros**  
 - **Ajustes heurísticos** según el tipo de contenido  
 
-### 🔹 3) Aplicación de filtros heurísticos  
+###  3) Aplicación de filtros heurísticos  
 Para mejorar la precisión, se aplican reglas adicionales:  
 ✅ **Filtro de géneros**: Se requiere alta coincidencia de géneros.  
 ✅ **Filtro por tipo de contenido**: Solo películas para películas y series para series.  
@@ -82,7 +82,7 @@ Para mejorar la precisión, se aplican reglas adicionales:
 ✅ **Ajuste por IMDB**: Se penalizan títulos con baja puntuación y se bonifican los mejor valorados.  
 ✅ **Impulso a títulos populares**: Favoreciendo los más reconocidos.  
 
-### 🔹 4) Selección de la mejor recomendación  
+###  4) Selección de la mejor recomendación  
 - Se encuentra el título más similar con **RapidFuzz**.  
 - Se priorizan los resultados por **puntuación de recomendación**.  
 - Se alternan los criterios en tres pasos sucesivos:  
