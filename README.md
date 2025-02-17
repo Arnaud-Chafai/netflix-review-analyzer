@@ -127,7 +127,7 @@ Para mejorar la precisión, se aplican reglas adicionales:
 
 - Se desarrolló una **interfaz web interactiva** utilizando **Flask**, priorizando la experiencia del usuario.
 - Funcionalidades principales:
-  - **Entrada de preferencias:** Selección de dos títulos favoritos.
+  - **Entrada de preferencias:** Selección de un título.
   - **Salida de recomendación:** Un título sugerido basado en clustering.
   - **Análisis de reseñas:** Resumen generado por el modelo **LLM** con un consenso de opiniones.
 
