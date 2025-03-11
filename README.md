@@ -141,7 +141,6 @@ Para mejorar la precisión, se aplican reglas adicionales:
 ---
 
 ###🎓 Trabajo de Fin de Máster  
-
 Este proyecto es el **Trabajo de Fin de Máster en Data Science e Inteligencia Artificial de Immune Technology Institute**
 
 
